@@ -1,7 +1,7 @@
-### Simple Calculator 
+# Simple Calculator 
 a fully functional calculator that replicates a calculator's core functions 
 
-##Things I learned:
+## Things I learned:
 * planning ahead before coding 
 * utilize pico.css for quick styling 
 * quert selectors for selecting DOM elements 
