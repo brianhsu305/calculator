@@ -1,76 +1,69 @@
 const keys = document.querySelector('.keys');
 const display = document.querySelector('.result');
-let num1 = '',
-	operator = '',
-	num2 = '';
+let displayedNum = '0',
+	storedNum = '0',
+    operator = '';
 
 keys.addEventListener('click', (e) => {
-	//pressed a number
 	const keyPressed = e.target.id;
-	
+
+	// if number is pressed
 	if (!isNaN(keyPressed)) {
-        if (num1==='' || num1==='0') {
-            (num1==='0') ? num1=keyPressed : num1 += keyPressed;
-        }
-        else {
-            (num2==='0') ? num2=keyPressed : num2 += keyPressed;
-        }
-	} 
-    else if (keyPressed === '+' || keyPressed === '-' || keyPressed === 'x' || keyPressed === '/') {
-		// if num2 empty
-		if (num2 === '') {
-            operator = keyPressed;
-        // num2 not empty
+		displayedNum === '0' ? (displayedNum = keyPressed) : (displayedNum += keyPressed);
+		display.innerHTML = displayedNum;
+	}
+
+	// if operator is pressed
+	else if (keyPressed === '+' || keyPressed === '-' || keyPressed === 'x' || keyPressed === '/') {
+		operator = keyPressed;
+		if (storedNum === '') {
+			operator = keyPressed;
 		} else {
-            num1 = operation(parseInt(num1), keyPressed, parseInt(num2)).toString();
-            console.log(num1);
-			num2 = '';
+			displayedNum = operation(parseInt(displayedNum), keyPressed, parseInt(storedNum)).toString();
 		}
+		storedNum = displayedNum;
+		displayedNum = '0';
+		display.innerHTML = storedNum;
 	}
-    else if (keyPressed === '=') {
-        console.log('im at equal')
-        if (num2 !== '') {
-
-            num1 = operation(parseInt(num1), operator, parseInt(num2)).toString();
-            num2='';
-        }
-    }
-    else if (keyPressed === 'c') {
-		num1 = '0';
-		num2 = '';
+	// if equal is pressed
+	else if (keyPressed === '=') {
+		if (storedNum !== '') {
+			displayedNum = operation(parseInt(displayedNum), operator, parseInt(storedNum)).toString();
+			storedNum = '';
+		}
+		display.innerHTML = displayedNum;
+	}
+	// if clear is pressed
+	else if (keyPressed === 'c') {
+		displayedNum = '0';
+		storedNum = '';
 		operator = '';
+		display.innerHTML = displayedNum;
 	}
-    
-    else if (keyPressed === 'back') {
-        (num2!=='') ? num2=num2.substring(0, num2.length-1) : num1=num1.substring(0, num1.length-1);
-    }
+	// if back is pressed
+	else if (keyPressed === 'back') {
+		displayedNum = displayedNum.substring(0, displayedNum.length - 1);
+		display.innerHTML = displayedNum;
+	}
 
-    console.log({
-        'keypressed':keyPressed,
-        'num1':num1,
-        'operator':operator,
-        'num2':num2
+	console.log({
+		keyPressed,
+		displayedNum,
+		operator,
+		storedNum,
+	});
 });
-    (num2!=='') ? display.innerHTML = num2 : display.innerHTML = num1;
-});
-
 
 function operation(num1, operator, num2) {
-    let res;
-    if (operator === '+'){
-        return num1 + num2;
-    }
-    else if (operator === '-'){
-        res = num1 - num2;
-    }
-    else if (operator === 'x'){
-        res = num1 * num2;
-    }
-    else if (operator === '/'){
-        res = num1/num2;
-    }
-	
-    console.log('inside operation', num1, num2, operator, res);
-    return res;
+	let res;
+	if (operator === '+') {
+		return num1 + num2;
+	} else if (operator === '-') {
+		res = num1 - num2;
+	} else if (operator === 'x') {
+		res = num1 * num2;
+	} else if (operator === '/') {
+		res = num1 / num2;
+	}
+	return res;
 }
-
